@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+      - ./source/postgres_public_trades.sql:/docker-entrypoint-initdb.d/postgres_public_trades.sql
+
+volumes:
+  postgres-volume:
+
