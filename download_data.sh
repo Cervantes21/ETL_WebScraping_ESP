@@ -35,10 +35,10 @@ else
 fi
 
 # Agregar BEGIN; al inicio del archivo
-sed -i '1s/^/BEGIN;\n/' "$archivo_destino"
+#sed -i '1s/^/BEGIN;\n/' "$archivo_destino"
 
 # Agregar COMMIT; al final del archivo
-echo -e "\nCOMMIT;" >> "$archivo_destino"
+#echo -e "\nCOMMIT;" >> "$archivo_destino"
 
 # Dar permisos de ejecución al script
 chmod +x "$0"
