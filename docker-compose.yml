@@ -12,12 +12,7 @@ services:
       - '5432:5432'
     volumes:
       - postgres-volume:/var/lib/postgresql/data
-      - ./source/postgres_public_trades.sql:/docker-entrypoint-initdb.d/postgres_public_trades.sql
-
-    deploy:
-      resources:
-        limits:
-          memory: 4G
+      - ./source/dividido:/docker-entrypoint-initdb.d
 
 volumes:
   postgres-volume:
