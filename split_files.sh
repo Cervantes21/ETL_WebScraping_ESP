@@ -1,40 +1,52 @@
 #!/bin/bash
 
-# Ruta del archivo SQL original
+# Ruta y nombre del archivo SQL original
 archivo_original="./source/postgres_public_trades.sql"
 
-# Verificar si el archivo original existe
-if [ ! -f "$archivo_original" ]; then
-  echo "El archivo \"$archivo_original\" no existe."
-  exit 1
-fi
+# Número máximo de líneas por archivo
+lines_per_file=30000
 
-# Crear carpeta para los archivos divididos
+# Prefijo para los archivos de salida
+output_prefix="trades"
+
+# Directorio de salida
 carpeta_destino="./source/dividido"
+
+# Crear el directorio de salida si no existe
 mkdir -p "$carpeta_destino"
 
-# Nombre base para los archivos divididos
-nombre_base="trades_part"
+# Contador para el número de archivos generados
+file_counter=1
 
-# Dividir el archivo original en archivos separados
-csplit --quiet --prefix="$carpeta_destino/$nombre_base" "$archivo_original" "/^INSERT/" "{*}"
+# Contador para el número de líneas en el archivo actual
+line_counter=0
 
-if [ $? -eq 0 ]; then
-  echo "El archivo \"$archivo_original\" se dividió exitosamente."
-else
-  echo "Error al dividir el archivo \"$archivo_original\"."
-  exit 1
-fi
+# Nombre del archivo de salida actual
+output_file="${output_prefix}_${file_counter}.sql"
 
-# Agregar BEGIN y COMMIT a cada archivo dividido
-archivos_divididos=("$carpeta_destino/$nombre_base"*)
-for archivo in "${archivos_divididos[@]}"; do
-  sed -i '1s/^/BEGIN;\n/' "$archivo"
-  echo -e "\nCOMMIT;" >> "$archivo"
-done
+# Leer el archivo SQL de entrada línea por línea
+while IFS= read -r line
+do
+  # Verificar si se ha alcanzado el límite de líneas por archivo
+  if [[ $line_counter -eq $lines_per_file ]]; then
+    # Incrementar el contador de archivos
+    ((file_counter++))
+    
+    # Restablecer el contador de líneas
+    line_counter=0
 
-echo "Se han creado los archivos divididos en la carpeta \"$carpeta_destino\"."
+    # Nombre del archivo de salida actual
+    output_file="${output_prefix}_${file_counter}.sql"
+  fi
 
-# Otorgamos permisos:
+  # Agregar la línea al archivo de salida actual
+  echo "$line" >> "$carpeta_destino/$output_file"
 
-chmod +x "$0"
+  # Incrementar el contador de líneas
+  ((line_counter++))
+
+done < "$archivo_original"
+
+# Mensaje de finalización
+echo "Se han creado $file_counter archivos en el directorio $carpeta_destino."
+
