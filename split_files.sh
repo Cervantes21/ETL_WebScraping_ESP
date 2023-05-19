@@ -61,3 +61,6 @@ echo -e "COMMIT;\n" >> "$carpeta_destino/$output_file"
 
 echo "Se han creado $file_counter archivos en el directorio $carpeta_destino."
 
+# Permisos:
+
+chmod +x "$0"
