@@ -14,9 +14,7 @@ services:
     volumes:
       - postgres-volume:/var/lib/postgresql/data
       - ./source/dividido:/docker-entrypoint-initdb.d
-
-    command: >
-      sh -c "docker cp ./import_data.sh postgres:/ && docker exec -it postgres /bin/bash -c '/import_data.sh'"
+      - ./import_data.sh:/import_data.sh
 
 volumes:
   postgres-volume:
