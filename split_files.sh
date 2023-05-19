@@ -22,21 +22,30 @@ file_counter=1
 line_counter=0
 
 # Nombre del archivo de salida actual
-output_file="${output_prefix}_${file_counter}.sql"
+output_file="${output_prefix}_$(printf "%03d" "$file_counter").sql"
+
+# Agregar la sentencia BEGIN al primer archivo
+echo -e "BEGIN;\n" > "$carpeta_destino/$output_file"
 
 # Leer el archivo SQL de entrada línea por línea
 while IFS= read -r line
 do
   # Verificar si se ha alcanzado el límite de líneas por archivo
   if [[ $line_counter -eq $lines_per_file ]]; then
+    # Agregar la sentencia COMMIT al archivo actual
+    echo -e "COMMIT;\n" >> "$carpeta_destino/$output_file"
+
     # Incrementar el contador de archivos
     ((file_counter++))
-    
+
     # Restablecer el contador de líneas
     line_counter=0
 
     # Nombre del archivo de salida actual
-    output_file="${output_prefix}_${file_counter}.sql"
+    output_file="${output_prefix}_$(printf "%03d" "$file_counter").sql"
+
+    # Agregar la sentencia BEGIN al nuevo archivo
+    echo -e "BEGIN;\n" > "$carpeta_destino/$output_file"
   fi
 
   # Agregar la línea al archivo de salida actual
@@ -47,6 +56,8 @@ do
 
 done < "$archivo_original"
 
-# Mensaje de finalización
+# Agregar la sentencia COMMIT al último archivo
+echo -e "COMMIT;\n" >> "$carpeta_destino/$output_file"
+
 echo "Se han creado $file_counter archivos en el directorio $carpeta_destino."
 
