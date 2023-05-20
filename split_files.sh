@@ -30,7 +30,7 @@ do
   # Verificar si se ha alcanzado el límite de líneas por archivo
   if [[ $line_counter -eq $lines_per_file ]]; then
     # Agregar ;) para cerrar la sentencia al archivo actual
-    echo -e ");\n" >> "$carpeta_destino/$output_file"
+    echo -e ";\n" >> "$carpeta_destino/$output_file"
 
     # Incrementar el contador de archivos
     ((file_counter++))
@@ -54,7 +54,7 @@ do
 done < "$archivo_original"
 
 # Agrega ;) para cerrar la sentencia del último archivo
-echo -e ");\n" >> "$carpeta_destino/$output_file"
+echo -e ";\n" >> "$carpeta_destino/$output_file"
 
 echo "Se han creado $file_counter archivos en el directorio $carpeta_destino."
 
