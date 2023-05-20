@@ -44,6 +44,7 @@ Cuando ejecutemos el programa, nos notificará cuando la carpeta sea creada y el
 Vamos a dividir nuestro archivo y agregaremos las sentencias INSERT INTO y cerraremos la sentencia.
 
 Le damos los permisos necesarios:
+
 ```
 chmod +x split_data.sh
 ```
@@ -83,40 +84,56 @@ Para activar:
 ```bash
 source venv/bin/activate
 ```
-Este comando varia según el OS
 
-Windows:
-```cmd
-python3 -m virtualenv venv
-```
-
-Para activar el ambiente:
-```cmd
-.\venv\Scripts\activate
-```
 ---
 
-## **Paso 4:**
+## **PASO 6: Crear la Base de datos con Docker**
 
-Ahora debemos de alzar nuestra imagen con docker-compose:
+Ahora debemos de alzar nuestra imagen con **docker-compose**:
 
 ```
 docker-compose up -d
 ```
-Este comando desplegará nuestra imagen además nos importará nuestro Script de SQL a nuestra base de datos
+Lo que hará, será importarnos nuestros archivos ya divididos para poder importar la base de datos
 
 Ahora verificamos:
 ```
 docker ps
 ```
 
-## **Paso 5:**
+## **PASO 7: Importar nuestra base de datos**
 
-Podemos ingresar ahora a nuestra base de datos:
+Debemos primero ejecutar, una terminal en bash para poder usar nuestro Script **import_data.sh**:
 
 ```
-docker exec -it postgres psql -U postgres
+docker exec -it postgres bash
 
+```
+Eso nos llevará a la consola de bash de nuestro contenedor de **docker**
+
+Usaremos el comando para listar todo lo que tenemos:
+```bash
+ls
+```
+Debería de estar nuestro archivo **import_data.sh**
+
+Vamos a darle permisos:
+```bash
+chmod +x import_data.sh
+```
+
+Corremos el Script:
+```bash
+./import_data.sh
+```
+Terminando este proceso ahora pasamos al siguiente paso.
+
+## **PASO 8: Ingresar a la base de datos**
+
+Estando en nuestro contenedor y ya ejecutado el **PASO 7** ingresaremos a la base de datos:
+
+```
+psql -U postgres
 ```
 
 Y de ahí continuamos a hacer nuestras consultas en SQL:
@@ -127,6 +144,12 @@ Ejemplo:
 \dt
 ```
 
+Si realizaste todos los pasos correctos y estás dentro de la base de datos
+Una consulta que podrías realizar sería la siguiente:
+
+```sql
+SELECT * FROM trades;
+```
 ### Algunos comandos de Postgres son:
 
 - \l o \list: Muestra la lista de bases de datos disponibles.
