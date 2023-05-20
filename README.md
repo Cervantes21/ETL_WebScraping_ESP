@@ -1,10 +1,20 @@
 # ETL_WebScraping_ESP
 Cursos y proyectos para aprender, o mejorar sobre ETL y WebScraping con Python como lenguaje y otras herramientas.
 
+---
 
-# Sigue los siguientes pasos para la instalación:
+# Crear nuestra base de datos en PostgreSQL:
 
-## **Paso 1:** 
+Vamos a importar nuestra base de datos, para crearla a traves de un contendor en docker, y poder extrar nuestros datos y poder hacer nuestras practicas. Para ello, sólo necesitamos seguir unos sencillos pasos.
+
+Lo que debemos saber:
+- Con un Script de Bash llamdo **download_data.sh**, vamos a descargar nuestros datos, pesa cerca de 556 MB. Y contiene **+6 millones de líneas**.
+- Como es muy pasado, procederemos a dividirlo en pequeños fragmentos y agregar correctamente las sentencias INSERT INTO y cerrarlas, por lo tanto usaremos un Script de Bash, llamado **split_data.sh** para automatizar este proceso.
+
+- Ya creada nuestra base de datos, procederemos a la ingesta de los datos, y usaremos nuestro Script **import_data.sh** para realizar este proceso de manera automatizada.
+
+SIGUE LOS SIGUIENTES PASOS:
+## **PASO 1: Clonar el Repositorio** 
 
 Primero tienes que clonar este repositorio con el comando:
 
@@ -12,7 +22,7 @@ Primero tienes que clonar este repositorio con el comando:
 git clone https://github.com/Cervantes21/ETL_WebScraping_ESP.git
 ```
 
-## **Paso 2:**
+## **Paso 2: Descargar datos**
 
 Descargaremos y crearemos la carpeta para poder importar nuestra base de datos:
 
@@ -29,9 +39,23 @@ Posteriormente ejecutamos con:
 ```
 Cuando ejecutemos el programa, nos notificará cuando la carpeta sea creada y el archivo descargado.
 
----
+## **PASO 3: Dividir el archivo original**
 
-## **PASO 3: MUY IMPORTANTE**
+Vamos a dividir nuestro archivo y agregaremos las sentencias INSERT INTO y cerraremos la sentencia.
+
+Le damos los permisos necesarios:
+```
+chmod +x split_data.sh
+```
+
+Ejecutamos:
+
+```
+./split_data.sh
+```
+
+---
+## **PASO 4: MUY IMPORTANTE**
 Debemos de crear una variable de entorno para guardar nuestra contraseña:
 
 Así podemos abrir un editor de texto, yo usaré para este ejemplo **vim**
@@ -42,12 +66,13 @@ vim .env
 Recordemos que para salir de **vim** Damos **ESC** seguido de teclear "**:wq**"
 
 En este ejemplo sólo se debe de sustituir "mypassword" por tu contraseña, las comillas son inecesarias:
+
 ```
 POSTGRES_PASSWORD=mypassword
 ```
 ---
 
-## **Paso 4:**
+## **PASO 5: Activar Entorno virtual**
 Ahora también debemos de crear y activar nuestro entorno virtual:
 
 ```bash
