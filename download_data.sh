@@ -34,11 +34,25 @@ else
   fi
 fi
 
-# Agregar BEGIN; al inicio del archivo
-#sed -i '1s/^/BEGIN;\n/' "$archivo_destino"
+# Descargar archivo JSON
+json_destino="$carpeta_destino/country_data.json"
+wget -O "$json_destino" "https://static.platzi.com/media/public/uploads/country_data_1a652f68-ca5a-4d02-94f9-9aa0d4edd6ac.json" -q
+if [ $? -eq 0 ]; then
+  echo "El archivo JSON se descargó exitosamente."
+else
+  echo "Error al descargar el archivo JSON."
+  exit 1
+fi
 
-# Agregar COMMIT; al final del archivo
-#echo -e "\nCOMMIT;" >> "$archivo_destino"
+# Descargar archivo CSV
+csv_destino="$carpeta_destino/hs_codes.csv"
+wget -O "$csv_destino" "https://static.platzi.com/media/public/uploads/hs_codes_67d0ca02-86f0-4829-8568-389ab67a38e5.csv" -q
+if [ $? -eq 0 ]; then
+  echo "El archivo CSV se descargó exitosamente."
+else
+  echo "Error al descargar el archivo CSV."
+  exit 1
+fi
 
 # Dar permisos de ejecución al script
 chmod +x "$0"
