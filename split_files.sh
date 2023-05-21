@@ -29,9 +29,6 @@ while IFS= read -r line
 do
   # Verificar si se ha alcanzado el límite de líneas por archivo
   if [[ $line_counter -eq $lines_per_file ]]; then
-    # Agregar ;) para cerrar la sentencia al archivo actual
-    echo -e ";\n" >> "$carpeta_destino/$output_file"
-
     # Incrementar el contador de archivos
     ((file_counter++))
 
@@ -40,9 +37,9 @@ do
 
     # Nombre del archivo de salida actual
     output_file="${output_prefix}_$(printf "%03d" "$file_counter").sql"
-    
+
     # Agregar la sentencia INSERT INTO al nuevo archivo
-    echo -e "INSERT INTO public.trades (country_code, year, comm_code, flow, trade_usd, kg, quantity, quantity_name)\nVALUES\n" > "$carpeta_destino/$output_file"
+    echo -e "INSERT INTO public.trades (country_code, year, comm_code, flow, trade_usd, kg, quantity, quantity_name)\nVALUES" > "$carpeta_destino/$output_file"
   fi
 
   # Agregar la línea al archivo de salida actual
@@ -53,8 +50,11 @@ do
 
 done < "$archivo_original"
 
-# Agrega ;) para cerrar la sentencia del último archivo
-echo -e ";\n" >> "$carpeta_destino/$output_file"
+# Reemplazar la última coma por punto y coma (;) en el último archivo
+sed -i '$ s/,$/;/' "$carpeta_destino/$output_file"
+
+# Eliminar el salto de línea en la última línea
+truncate -s -1 "$carpeta_destino/$output_file"
 
 echo "Se han creado $file_counter archivos en el directorio $carpeta_destino."
 
