@@ -42,6 +42,12 @@ do
     echo -e "INSERT INTO public.trades (country_code, year, comm_code, flow, trade_usd, kg, quantity, quantity_name)\nVALUES" > "$carpeta_destino/$output_file"
   fi
 
+  # Verificar si es la última línea del archivo actual
+  if [[ $line_counter -eq $((lines_per_file - 1)) ]]; then
+    # Reemplazar la última coma por punto y coma (;)
+    line="${line%,};"
+  fi
+
   # Agregar la línea al archivo de salida actual
   echo "$line" >> "$carpeta_destino/$output_file"
 
@@ -50,13 +56,14 @@ do
 
 done < "$archivo_original"
 
-# Reemplazar la última coma por punto y coma (;) en el último archivo
-sed -i '$ s/,$/;/' "$carpeta_destino/$output_file"
+# Reemplazar la última coma por punto y coma (;) en el último archivo generado
+if [[ $line_counter -gt 0 ]]; then
+  last_file="$carpeta_destino/$output_file"
+  sed -i '$ s/,$/;/' "$last_file"
+fi
 
-# Eliminar el salto de línea en la última línea
-truncate -s -1 "$carpeta_destino/$output_file"
-
+# Mensaje de finalización
 echo "Se han creado $file_counter archivos en el directorio $carpeta_destino."
 
-# Dar permisos de ejecución al script
+# Establecer permisos
 chmod +x "$0"
