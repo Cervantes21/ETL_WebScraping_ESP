@@ -15,10 +15,6 @@ port = 5432
 database = 'postgres'
 user = 'postgres'
 
-# Leer el contenido del archivo SQL
-with open('./source/postgres_public_traders.sql', 'r') as file:
-    sql_script = file.read()
-
 # Conectar a la base de datos
 conn = psycopg2.connect(
     host=host,
@@ -31,13 +27,4 @@ conn = psycopg2.connect(
 # Crear un cursor para ejecutar las consultas
 cursor = conn.cursor()
 
-# Ejecutar el script SQL
-cursor.execute(sql_script)
-
-# Confirmar los cambios en la base de datos
-conn.commit()
-
-# Cerrar la conexión
-cursor.close()
-conn.close()
 
