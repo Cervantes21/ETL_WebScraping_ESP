@@ -2,6 +2,15 @@
 Cursos y proyectos para aprender, o mejorar sobre ETL y WebScraping con Python como lenguaje y otras herramientas.
 
 ---
+# **¿No tienes Docker, o tienes dudas sobre PostgreSQL?**
+
+Te dejo estos link con información adicional:
+
+- [Este repositorio](https://github.com/ddasilva64/ETLPPT23001esp/blob/master/extraccion-de-datos.md) contiene Paso a paso la instalación de cada Software, además realiza la explicación para distintos tipos de Sistemas Operativos
+
+- [¡¡Tengo Windows!!](https://www.youtube.com/watch?v=ZO4KWQfUBBc&pp=ygUKZG9ja2VyIHdzbA%3D%3D) Bueno, creo que te ha tocado un poquito de suerte, ya que en este vídeo lo explica a detalle la descarga de un subsistema de linux **(WLS)**, su instalación y configuración así mismo de **Docker**. 
+
+---
 
 # Crear nuestra base de datos en PostgreSQL:
 
@@ -159,4 +168,28 @@ SELECT * FROM trades;
 - \du o \du+: Muestra la lista de roles de usuarios y sus atributos.
 - \q: Sale de la interfaz de línea de comandos de PostgreSQL.
 
+---
+
+# RECUERDA: 
+Recuerda verificar sí tu contenedor sigue corriendo con el comando
+```
+docker ps
+```
+
+Para detenerlo:
+```
+docker stop postgres
+```
+
+Para volver a iniciarlo:
+```
+docker start postgres
+```
+
+## Sí ya está creada la Base de datos, puedes volver a acceder:
+
+Una vez iniciado el contenedor:
+```
+docker exec -it postgres psql -U postgres
+```
 
