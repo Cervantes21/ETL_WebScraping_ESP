@@ -55,13 +55,13 @@ Vamos a dividir nuestro archivo y agregaremos las sentencias INSERT INTO y cerra
 Le damos los permisos necesarios:
 
 ```
-chmod +x split_data.sh
+chmod +x split_files.sh
 ```
 
 Ejecutamos:
 
 ```
-./split_data.sh
+./split_files.sh
 ```
 
 ---
